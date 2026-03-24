@@ -1,5 +1,5 @@
 <script>
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
 
   /**
    * @typedef {Object} NavPage
@@ -8,15 +8,15 @@
    */
 
   /**
-   * @type {NavPage[]}
+   * @type {{ pages?: NavPage[] }}
    */
-  export let pages = [];
+  let { pages = [] } = $props();
 </script>
 
 <nav class="flex justify-center">
   <ul class="flex flex-row overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
     {#each pages as navPage}
-      {@const isActive = $page.url.pathname === navPage.path}
+      {@const isActive = page.url.pathname === navPage.path}
       <li>
         <a
           href={navPage.path}

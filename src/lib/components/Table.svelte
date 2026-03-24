@@ -7,14 +7,9 @@
    */
 
   /**
-   * @type {ColumnSchema[]}
+   * @type {{ schema?: ColumnSchema[], data?: Record<string, any>[] }}
    */
-  export let schema = [];
-
-  /**
-   * @type {Record<string, any>[]}
-   */
-  export let data = [];
+  let { schema = [], data = [] } = $props();
 </script>
 
 <div class="overflow-x-auto">
