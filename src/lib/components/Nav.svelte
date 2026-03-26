@@ -1,5 +1,5 @@
 <script>
-  import { page } from '$app/state';
+  import { page } from "$app/state";
 
   /**
    * @typedef {Object} NavPage
@@ -14,7 +14,9 @@
 </script>
 
 <nav class="flex justify-center">
-  <ul class="flex flex-row overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+  <ul
+    class="flex flex-row overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+  >
     {#each pages as navPage}
       {@const isActive = page.url.pathname === navPage.path}
       <li>
@@ -22,8 +24,8 @@
           href={navPage.path}
           class="block whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors
             {isActive
-              ? 'bg-gray-900 text-white rounded'
-              : 'text-gray-600 hover:text-gray-900'}"
+            ? 'bg-gray-900 text-white rounded'
+            : 'text-gray-600 hover:text-gray-900'}"
         >
           {navPage.label}
         </a>
