@@ -44,56 +44,79 @@ You can preview the production build with `npm run preview`.
 
 ## Main Template File
 
-t-client/src/app.html is the root HTML shell. It has two SvelteKit placeholders:
-- %sveltekit.head% — where SvelteKit injects <meta>, <link>, <script> tags
-- %sveltekit.body% — where the rendered page content goes
+`src/app.html` is the root HTML shell. It has two SvelteKit placeholders:
+- `%sveltekit.head%` — where SvelteKit injects `<meta>`, `<link>`, `<script>` tags
+- `%sveltekit.body%` — where the rendered page content goes
 
-It also sets data-sveltekit-preload-data="hover" on the <body>, which prefetches page data when you
-hover a link.
+It also sets `data-sveltekit-preload-data="hover"` on the `<body>`, which prefetches page data when you hover a link.
 
 ---
-## Layout & Page Loading
 
-SvelteKit uses file-based routing in src/routes/:
+## Route Structure
+
+SvelteKit file-based routing using route groups in `src/routes/`:
+
+```
 src/routes/
-├── +layout.svelte        ← wraps ALL pages (nav + children)
-├── +page.svelte          ← renders at /
-└── table-example/
-    └── +page.svelte      ← renders at /table-example
+├── +layout.svelte              ← root: global CSS + favicon only
+├── (app)/
+│   ├── +layout.svelte          ← wraps pages in <Nav> shell
+│   ├── +page.svelte            → /
+│   └── table-example/
+│       └── +page.svelte        → /table-example
+└── (auth)/
+    └── +layout.svelte          ← bare layout, no nav (for sign-in etc.)
+```
 
-+layout.svelte is the root layout. Every page is rendered inside it via {@render children()}. It also
-imports the global CSS (app.css) and the <Nav> component — so both load on every page.
+Route groups (folders in parentheses) don't affect the URL — they only control which layout a page inherits.
+
+### Adding a page with nav
+1. Create `src/routes/(app)/your-page/+page.svelte`
+2. Add `{ label: 'Your Page', path: '/your-page' }` to the `pages` array in `src/routes/(app)/+layout.svelte`
+
+### Adding a page without nav (e.g. sign-in)
+Drop a `+page.svelte` inside `src/routes/(auth)/sign-in/` — it inherits the bare `(auth)/+layout.svelte` automatically.
 
 ---
+
+## Nav Component
+
+`src/lib/components/Nav.svelte` is a full-page shell with three sections:
+
+- **Header** (full width, fixed height): logo placeholder top-left, profile selector button top-right
+- **Sidebar** (`w-56`, fixed): page links in the middle; gear/settings button pinned to the bottom-left
+- **Main area**: fills remaining space, renders page content via a `children` snippet
+
+The `pages` array and page content are passed in from `(app)/+layout.svelte`.
+
+#### Placeholders to revisit
+- **Logo**: swap the `<span>` div in Nav for `<img src={logo} alt="..." />` once the asset is available
+- **Profile selector**: the button in the header top-right
+- **Settings menu**: the gear button at the bottom of the sidebar (will expand to admin/profile/settings)
+
+---
+
 ## How Components Are Loaded
 
-Components live in src/lib/components/ and are exported through src/lib/index.js:
+Components live in `src/lib/components/` and are exported through `src/lib/index.js`:
+
+```js
 export { default as Nav } from './components/Nav.svelte';
 export { default as Table } from './components/Table.svelte';
+```
 
-Pages and layouts import them using the $lib alias:
+Pages and layouts import them using the `$lib` alias:
 
+```js
 import { Nav, Table } from '$lib';
+```
 
-To add a new component: create it in src/lib/components/, export it from src/lib/index.js, then
-import via $lib.
+To add a new component: create it in `src/lib/components/`, export it from `src/lib/index.js`, then import via `$lib`.
 
 ---
+
 ## Resource Loading (CSS, JS)
 
-- Tailwind CSS — app.css has @import "tailwindcss" and is imported once in +layout.svelte, making it
-global
-- JavaScript — Vite + SvelteKit handle bundling automatically; no manual script tags needed
-- Static assets — go in static/ and are served at the root path
-
----
-## Navigation
-
-The <Nav> component in +layout.svelte has a hardcoded page list:
-
-const pages = [
-    { label: 'Home', path: '/' },
-    { label: 'Table Example', path: '/table-example' },
-];
-
-To add a new page: create a folder + +page.svelte in src/routes/, then add an entry to this list.
+- **Tailwind CSS** — `app.css` has `@import "tailwindcss"` and is imported once in the root `+layout.svelte`, making it global
+- **JavaScript** — Vite + SvelteKit handle bundling automatically; no manual script tags needed
+- **Static assets** — go in `static/` and are served at the root path
