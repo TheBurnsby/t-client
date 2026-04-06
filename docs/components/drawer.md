@@ -20,10 +20,12 @@ Import and call from anywhere in the app:
 ```js
 import { drawer } from '$lib/stores/drawer.svelte.js';
 
-drawer.open();       // open the drawer
-drawer.close();      // close the drawer
-drawer.toggle();     // toggle open/closed
-drawer.isOpen;       // reactive boolean — current state
+drawer.open();           // open at default width (w-80)
+drawer.open('w-1/2');   // open at a specific width
+drawer.close();          // close the drawer
+drawer.toggle();         // toggle open/closed
+drawer.isOpen;           // reactive boolean — current state
+drawer.width;            // reactive string — current Tailwind width class
 ```
 
 ---

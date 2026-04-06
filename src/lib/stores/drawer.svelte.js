@@ -6,14 +6,23 @@
  */
 
 let isOpen = $state(false);
+let width = $state('w-80');
 
 export const drawer = {
 	/** Whether the drawer is currently open. */
 	get isOpen() {
 		return isOpen;
 	},
-	/** Opens the drawer. */
-	open: () => {
+	/** The current Tailwind width class applied to the drawer panel. */
+	get width() {
+		return width;
+	},
+	/**
+	 * Opens the drawer, optionally setting a width.
+	 * @param {string} [w='w-80'] - Tailwind width class e.g. 'w-96', 'w-1/2', 'w-[600px]'.
+	 */
+	open: (w = 'w-80') => {
+		width = w;
 		isOpen = true;
 	},
 	/** Closes the drawer. */
