@@ -1,7 +1,7 @@
 <script>
   import { Table } from "$lib";
 
-  /** @type {import('$lib/components/Table.svelte').ColumnSchema[]} */
+  /** @type {import('$lib/types').ColumnSchema[]} */
   const schema = [
     { key: "name", label: "Name", type: "string" },
     { key: "role", label: "Role", type: "string" },

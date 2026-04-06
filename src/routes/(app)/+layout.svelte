@@ -11,6 +11,8 @@
 	const pages = [
 		{ label: 'Home', path: '/' },
 		{ label: 'Table Example', path: '/table-example' },
+		{ label: 'Modal Example', path: '/modal-example' },
+		{ label: 'Drawer Example', path: '/drawer-example' },
 	];
 
 	let { children } = $props();
