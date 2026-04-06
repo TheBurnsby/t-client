@@ -1,5 +1,5 @@
 <script>
-	import { Nav, Drawer } from '$lib';
+	import { Nav, Drawer, Modal } from '$lib';
 
 	/**
 	 * @typedef {Object} NavPage
@@ -25,3 +25,9 @@
 		<p class="text-sm text-gray-500">Drawer content goes here.</p>
 	{/snippet}
 </Drawer>
+
+<Modal title="Modal Title">
+	{#snippet children()}
+		<p class="text-sm text-gray-500">Modal content goes here.</p>
+	{/snippet}
+</Modal>

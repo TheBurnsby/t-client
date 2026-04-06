@@ -2,3 +2,4 @@
 export { default as Table } from './components/Table.svelte';
 export { default as Nav } from './components/Nav.svelte';
 export { default as Drawer } from './components/Drawer.svelte';
+export { default as Modal } from './components/Modal.svelte';
