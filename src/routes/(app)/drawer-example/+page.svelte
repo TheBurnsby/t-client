@@ -1,12 +1,12 @@
 <script>
-	import { drawer } from '$lib/stores/drawer.svelte.js';
+	import { drawer } from "$lib/stores/drawer.svelte.js";
 
 	/** @type {{ label: string, width: string }[]} */
 	const widths = [
-		{ label: 'Narrow (w-64)', width: 'w-64' },
-		{ label: 'Default (w-80)', width: 'w-80' },
-		{ label: 'Wide (w-96)', width: 'w-96' },
-		{ label: 'Half screen (w-1/2)', width: 'w-1/2' },
+		{ label: "w-1/4", width: "w-1/4" },
+		{ label: "w-1/3", width: "w-1/3" },
+		// { label: 'w-2/5', width: 'w-2/5' },
+		{ label: "w-1/2", width: "w-1/2" },
 	];
 </script>
 
