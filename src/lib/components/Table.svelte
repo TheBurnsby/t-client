@@ -1,13 +1,6 @@
 <script>
   /**
-   * @typedef {Object} ColumnSchema
-   * @property {string} key - The property key to read from each row object
-   * @property {string} label - The column header display name
-   * @property {'string'|'number'|'boolean'|'date'} type - The data type of the column
-   */
-
-  /**
-   * @type {{ schema?: ColumnSchema[], data?: Record<string, any>[] }}
+   * @type {{ schema?: import('$lib/types').ColumnSchema[], data?: Record<string, any>[] }}
    */
   let { schema = [], data = [] } = $props();
 </script>
