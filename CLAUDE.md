@@ -14,6 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Ask for approval before executing any scripts, installing any packages and writing any code.
 - Always ask before making architectural changes.
 - Add documentation comments in JSDoc format for any new code written
+- Run `npm run check` after creating or modifying any component or store, and fix all errors before considering the task complete
 
 ## Overview
 
