@@ -27,7 +27,7 @@
   let sortDir = $state(null);
   /** @type {Record<string, any>|null} */
   let activeRow = $state(null);
-  let tooltip = $state({ visible: false, text: '', x: 0, y: 0 });
+  let tooltip = $state({ visible: false, text: '', x: 0, y: 0, below: false });
 
   let sortedData = $derived.by(() => {
     if (!sortKey || !sortDir) return data;
@@ -48,6 +48,7 @@
    * @returns {string}
    */
   function contrastColor(hex) {
+    if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '#000000';
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -94,7 +95,9 @@
    */
   function normalizeTag(tag) {
     if (typeof tag === 'string') return { label: tag, color: '#efefef' };
-    return { label: tag.label, color: tag.color ?? '#efefef' };
+    const raw = tag.color ?? '';
+    const color = /^#[0-9a-fA-F]{6}$/.test(raw) ? raw : '#efefef';
+    return { label: tag.label, color };
   }
 
   /**
@@ -133,11 +136,15 @@
     if (events?.onCellHover) events.onCellHover(value, col.key, row);
     if (col.tooltip) {
       const rect = /** @type {HTMLElement} */ (e.currentTarget).getBoundingClientRect();
+      const rawX = rect.left + rect.width / 2;
+      const x = Math.max(80, Math.min(rawX, window.innerWidth - 80));
+      const fitsAbove = rect.top >= 40;
       tooltip = {
         visible: true,
         text: col.tooltip.getValue(row),
-        x: rect.left + rect.width / 2,
-        y: rect.top - 8,
+        x,
+        y: fitsAbove ? rect.top - 8 : rect.bottom + 8,
+        below: !fitsAbove,
       };
     }
   }
@@ -150,13 +157,16 @@
 
 {#if tooltip.visible}
   <div
-    class="fixed z-50 -translate-x-1/2 -translate-y-full rounded bg-gray-900 px-2 py-1 text-xs text-white shadow pointer-events-none"
+    class="fixed z-50 -translate-x-1/2 rounded bg-gray-900 px-2 py-1 text-xs text-white shadow pointer-events-none"
+    class:-translate-y-full={!tooltip.below}
     style="top: {tooltip.y}px; left: {tooltip.x}px;"
   >
     {tooltip.text}
-    <div
-      class="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-gray-900"
-    ></div>
+    {#if !tooltip.below}
+      <div class="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+    {:else}
+      <div class="absolute left-1/2 bottom-full -translate-x-1/2 border-4 border-transparent" style="border-bottom-color: #111827;"></div>
+    {/if}
   </div>
 {/if}
 
@@ -170,7 +180,16 @@
             class:cursor-pointer={!!events?.onHeaderClick}
             class:select-none={!!events?.onHeaderClick}
             style={col.minWidth ? `min-width: ${col.minWidth}px` : ''}
+            tabindex={events?.onHeaderClick ? 0 : undefined}
+            aria-sort={events?.onHeaderClick
+              ? sortKey === col.key
+                ? sortDir === 'asc' ? 'ascending' : 'descending'
+                : 'none'
+              : undefined}
             onclick={events?.onHeaderClick ? () => handleHeaderClick(col.key) : undefined}
+            onkeydown={events?.onHeaderClick
+              ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeaderClick(col.key); } }
+              : undefined}
           >
             <span class="flex items-center gap-1">
               {col.label}
@@ -195,7 +214,11 @@
               ? 'bg-white'
               : 'bg-gray-50'}
           class:cursor-pointer={!!events?.onRowClick}
+          tabindex={events?.onRowClick ? 0 : undefined}
           onclick={() => handleRowClick(row)}
+          onkeydown={events?.onRowClick
+            ? (e) => { if (e.key === 'Enter' || e.key === ' ') handleRowClick(row); }
+            : undefined}
         >
           {#each schema as col}
             {@const value = row[col.key]}
@@ -205,7 +228,7 @@
               class:text-ellipsis={col.type !== 'tags'}
               class:whitespace-nowrap={col.type !== 'tags'}
               style={col.minWidth ? `min-width: ${col.minWidth}px` : ''}
-              onclick={events?.onCellClick ? () => events.onCellClick?.(value, col.key, row) : undefined}
+              onclick={() => events?.onCellClick?.(value, col.key, row)}
               onmouseenter={(e) => handleCellMouseEnter(e, value, col, row)}
               onmouseleave={() => handleCellMouseLeave(col)}
             >
