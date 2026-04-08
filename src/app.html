@@ -1,6 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
+		<!-- Apply saved theme before first paint to avoid flash -->
+		<script>
+			try {
+				const saved = localStorage.getItem('theme');
+				if (saved === 'dark' || saved === 'light') {
+					document.documentElement.setAttribute('data-theme', saved);
+				}
+			} catch (_) {}
+		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
