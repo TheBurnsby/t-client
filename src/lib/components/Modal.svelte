@@ -1,5 +1,6 @@
 <script>
 	import { modal } from '$lib/stores/modal.svelte.js';
+	import XIcon from '$lib/components/icons/XIcon.svelte';
 
 	/**
 	 * @typedef {Object} ModalProps
@@ -68,21 +69,7 @@
 				class="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
 				aria-label="Close modal"
 			>
-				<!-- × icon -->
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-5 w-5"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<line x1="18" y1="6" x2="6" y2="18" />
-					<line x1="6" y1="6" x2="18" y2="18" />
-				</svg>
+				<XIcon class="h-5 w-5" />
 			</button>
 		</div>
 

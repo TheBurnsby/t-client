@@ -1,6 +1,9 @@
 <script>
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
+  import ChevronDownIcon from '$lib/components/icons/ChevronDownIcon.svelte';
+  import SignOutIcon from '$lib/components/icons/SignOutIcon.svelte';
+  import SettingsIcon from '$lib/components/icons/SettingsIcon.svelte';
 
   /**
    * @typedef {Object} NavPage
@@ -60,20 +63,7 @@
         <!-- TODO: replace with user avatar -->
         <span class="text-xs font-semibold text-gray-600">P</span>
       </div>
-      <!-- Chevron down -->
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-4 h-4 text-gray-400"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06z"
-          clip-rule="evenodd"
-        />
-      </svg>
+      <ChevronDownIcon class="w-4 h-4 text-gray-400" />
     </button>
   </header>
 
@@ -111,22 +101,7 @@
           class="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
           aria-label="Sign out"
         >
-          <!-- Arrow-right-on-rectangle (sign out) icon -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
+          <SignOutIcon class="w-5 h-5 shrink-0" />
           <span>Sign out</span>
         </button>
       </div>
@@ -137,23 +112,7 @@
           class="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
           aria-label="Settings"
         >
-          <!-- Gear icon -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path
-              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
-            />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
+          <SettingsIcon class="w-5 h-5 shrink-0" />
           <span>Settings</span>
         </button>
       </div>
