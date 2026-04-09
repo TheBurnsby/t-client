@@ -3,6 +3,8 @@
   import NoSymbolIcon from '$lib/components/icons/NoSymbolIcon.svelte';
   import ChevronUpIcon from '$lib/components/icons/ChevronUpIcon.svelte';
   import ChevronDownIcon from '$lib/components/icons/ChevronDownIcon.svelte';
+  import ChevronLeftIcon from '$lib/components/icons/ChevronLeftIcon.svelte';
+  import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
 
   /**
    * @typedef {import('$lib/types').ColumnSchema} ColumnSchema
@@ -28,8 +30,9 @@
   /** @type {Record<string, any>|null} */
   let activeRow = $state(null);
   let tooltip = $state({ visible: false, text: '', x: 0, y: 0, below: false });
+  let currentPage = $state(1);
 
-  let sortedData = $derived.by(() => {
+  const sortedData = $derived.by(() => {
     if (!sortKey || !sortDir) return data;
     const key = /** @type {string} */ (sortKey);
     return [...data].sort((a, b) => {
@@ -41,6 +44,19 @@
       return sortDir === 'asc' ? cmp : -cmp;
     });
   });
+
+  const pageSize = $derived(addOns?.pagination?.pageSize ?? 50);
+  const totalResults = $derived(sortedData.length);
+  const totalPages = $derived(Math.max(1, Math.ceil(totalResults / pageSize)));
+
+  const paginatedData = $derived.by(() => {
+    if (!addOns?.pagination) return sortedData;
+    const start = (currentPage - 1) * pageSize;
+    return sortedData.slice(start, start + pageSize);
+  });
+
+  const resultStart = $derived((currentPage - 1) * pageSize + 1);
+  const resultEnd = $derived(Math.min(currentPage * pageSize, totalResults));
 
   /**
    * Computes a contrasting text color (black or white) for a given background hex.
@@ -113,6 +129,7 @@
       sortKey = key;
       sortDir = 'asc';
     }
+    currentPage = 1;
   }
 
   /**
@@ -170,6 +187,7 @@
   </div>
 {/if}
 
+<div class="flex flex-col">
 <div class="overflow-x-auto">
   <table class="min-w-full border border-border text-sm">
     <thead class="bg-surface-alt text-left">
@@ -206,7 +224,7 @@
       </tr>
     </thead>
     <tbody>
-      {#each sortedData as row, i}
+      {#each paginatedData as row, i}
         <tr
           class={activeRow === row
             ? 'row-active'
@@ -272,6 +290,34 @@
       {/if}
     </tbody>
   </table>
+</div>
+
+<!-- Footer -->
+<div class="flex items-center justify-between border border-t-0 border-border bg-surface-alt px-4 py-2">
+  {#if addOns?.pagination}
+    <span class="text-xs text-muted">Showing {resultStart}–{resultEnd} of {totalResults} results</span>
+    <div class="flex items-center gap-1">
+      <button
+        onclick={() => currentPage--}
+        disabled={currentPage === 1}
+        class="rounded-md p-1.5 text-muted transition-colors hover:bg-surface hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Previous page"
+      >
+        <ChevronLeftIcon class="h-4 w-4" />
+      </button>
+      <button
+        onclick={() => currentPage++}
+        disabled={currentPage === totalPages}
+        class="rounded-md p-1.5 text-muted transition-colors hover:bg-surface hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Next page"
+      >
+        <ChevronRightIcon class="h-4 w-4" />
+      </button>
+    </div>
+  {:else}
+    <span class="text-xs text-muted">{totalResults} results</span>
+  {/if}
+</div>
 </div>
 
 <style>

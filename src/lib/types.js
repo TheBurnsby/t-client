@@ -21,6 +21,8 @@
 
 /**
  * @typedef {Object} TableAddOns
+ * @property {{ pageSize?: number }} [pagination] - When present, enables pagination below the table.
+ *   pageSize defaults to 50.
  */
 
 export {};
