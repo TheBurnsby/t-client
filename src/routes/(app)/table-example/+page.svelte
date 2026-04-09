@@ -9,61 +9,67 @@
       label: "Name",
       type: "string",
       minWidth: 160,
-      tooltip: { getValue: (row) => `Full name: ${row.name} (${row.role})` },
+      tooltip: { getValue: (row) => `${row.name} — ${row.department}` },
     },
     { key: "role", label: "Role", type: "string" },
-    { key: "active", label: "Active", type: "boolean" },
-    { key: "badge", label: "Badge", type: "icon" },
-    { key: "startDate", label: "Start Date", type: "date" },
-    { key: "lastLogin", label: "Last Login", type: "datetime", minWidth: 180 },
-    { key: "tags", label: "Tags", type: "tags" },
+    { key: "department", label: "Department", type: "string" },
+    { key: "active", label: "On Duty", type: "boolean" },
+    { key: "badge", label: "Verified", type: "icon" },
+    { key: "startDate", label: "Hire Date", type: "date" },
+    { key: "lastLogin", label: "Last Check-In", type: "datetime", minWidth: 180 },
+    { key: "tags", label: "Specialties", type: "tags" },
   ];
 
   const data = [
     {
-      name: "Alice Johnson",
-      role: "Engineer",
+      name: "Dr. Sarah Okonkwo",
+      role: "Attending Physician",
+      department: "Cardiology",
       active: true,
       badge: CheckCircleIcon,
-      startDate: "2021-03-15",
-      lastLogin: "2025-04-03T14:30:00",
-      tags: [{ label: "admin", color: "#1d4ed8" }, "engineer"],
+      startDate: "2018-06-01",
+      lastLogin: "2026-04-09T07:45:00",
+      tags: [{ label: "cardiology", color: "#1d4ed8" }, "ICU"],
     },
     {
-      name: "Bob Smith",
-      role: "Designer",
+      name: "Dr. Marcus Hale",
+      role: "Resident",
+      department: "Emergency",
+      active: true,
+      badge: CheckCircleIcon,
+      startDate: "2024-07-01",
+      lastLogin: "2026-04-09T06:30:00",
+      tags: [{ label: "emergency", color: "#b45309" }, "trauma"],
+    },
+    {
+      name: "Nurse Linda Tran",
+      role: "Charge Nurse",
+      department: "Oncology",
+      active: true,
+      badge: CheckCircleIcon,
+      startDate: "2015-03-14",
+      lastLogin: "2026-04-09T08:00:00",
+      tags: ["oncology", { label: "palliative", color: "#7c3aed" }],
+    },
+    {
+      name: "Dr. James Patel",
+      role: "Surgeon",
+      department: "Orthopedics",
       active: false,
       badge: CheckCircleIcon,
-      startDate: "2022-07-01",
-      lastLogin: "2025-03-28T09:15:00",
-      tags: [{ label: "contractor", color: "#b45309" }, "design"],
+      startDate: "2011-09-20",
+      lastLogin: "2026-04-07T14:00:00",
+      tags: [{ label: "surgery", color: "#dc2626" }, "sports medicine"],
     },
     {
-      name: "Carol White",
-      role: "Manager",
+      name: "Nurse Aisha Bello",
+      role: "Registered Nurse",
+      department: "Pediatrics",
       active: true,
       badge: CheckCircleIcon,
-      startDate: "2019-11-20",
-      lastLogin: "2025-04-07T16:45:00",
-      tags: ["manager"],
-    },
-    {
-      name: "David Lee",
-      role: "Engineer",
-      active: true,
-      badge: CheckCircleIcon,
-      startDate: "2023-01-10",
-      lastLogin: "2025-04-06T11:00:00",
-      tags: [{ label: "lead", color: "#7c3aed" }, "engineer"],
-    },
-    {
-      name: "Eva Martinez",
-      role: "Analyst",
-      active: false,
-      badge: CheckCircleIcon,
-      startDate: "2020-06-05",
-      lastLogin: "2025-03-15T08:30:00",
-      tags: ["analyst"],
+      startDate: "2021-02-08",
+      lastLogin: "2026-04-09T07:15:00",
+      tags: ["pediatrics", { label: "neonatal", color: "#059669" }],
     },
   ];
 
@@ -72,7 +78,6 @@
     onRowClick: (row) => console.log("Row clicked:", row),
     onCellClick: (value, key, row) =>
       console.log("Cell clicked:", { key, value, row }),
-    // onCellHover: (value, key, row) => console.log("Cell hovered:", { key, value }),
     onHeaderClick: (key) => console.log("Header clicked:", key),
   };
 
@@ -81,6 +86,6 @@
 </script>
 
 <div class="mx-auto mt-8 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Table Example</h1>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Staff Directory</h1>
   <Table {schema} {data} {events} {addOns} />
 </div>
