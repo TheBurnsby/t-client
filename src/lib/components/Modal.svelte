@@ -10,10 +10,29 @@
 	 *   When not provided the footer is hidden entirely.
 	 * @property {boolean} [closeOnBackdrop=true] - When true, clicking the backdrop closes the modal.
 	 *   Set to false to prevent accidental dismissal (e.g. confirmation dialogs).
+	 * @property {boolean} [open] - When provided, controls visibility directly instead of the global
+	 *   modal store. Use this for component-level modals that should not affect global state.
+	 * @property {() => void} [onclose] - Called when the modal requests to close. Required when
+	 *   using the `open` prop so the caller can update its own state.
 	 */
 
 	/** @type {ModalProps} */
-	let { title, children, footer, closeOnBackdrop = true } = $props();
+	let { title, children, footer, closeOnBackdrop = true, open, onclose } = $props();
+
+	/** Whether this instance is controlled by the `open` prop or the global store. */
+	const isControlled = $derived(open !== undefined);
+
+	/** Resolves the current open state from either the prop or the global store. */
+	const isOpen = $derived(isControlled ? open : modal.isOpen);
+
+	/** Closes the modal via the appropriate mechanism. */
+	function close() {
+		if (isControlled) {
+			onclose?.();
+		} else {
+			modal.close();
+		}
+	}
 
 	/** Unique id for aria-labelledby binding. */
 	const titleId = 'modal-title';
@@ -24,7 +43,7 @@
 	 */
 	function handleKeydown(event) {
 		if (event.key === 'Escape') {
-			modal.close();
+			close();
 		}
 	}
 
@@ -33,14 +52,14 @@
 	 */
 	function handleBackdropClick() {
 		if (closeOnBackdrop) {
-			modal.close();
+			close();
 		}
 	}
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
 
-{#if modal.isOpen}
+{#if isOpen}
 	<!-- Backdrop -->
 	<div
 		class="fixed inset-0 z-40 bg-black/40"
@@ -65,7 +84,7 @@
 				<span></span>
 			{/if}
 			<button
-				onclick={modal.close}
+				onclick={close}
 				class="rounded-md p-1.5 text-muted transition-colors hover:bg-surface-alt hover:text-foreground"
 				aria-label="Close modal"
 			>

@@ -2,9 +2,10 @@
 	import { untrack } from 'svelte';
 	import ChevronLeftIcon from '$lib/components/icons/ChevronLeftIcon.svelte';
 	import ChevronRightIcon from '$lib/components/icons/ChevronRightIcon.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 
 	/**
-	 * @typedef {{ date: string, label: string, description?: string, color?: string }} CalendarEvent
+	 * @typedef {{ date: string, label: string, details?: Record<string, string>, color?: string }} CalendarEvent
 	 */
 
 	/**
@@ -34,10 +35,9 @@
 	const calendarDays = $derived.by(() => {
 		const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
 		const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-		/** @type {(number | null)[]} */
 		const days = [];
-		for (let i = 0; i < firstDay; i++) days.push(null);
-		for (let d = 1; d <= daysInMonth; d++) days.push(d);
+		days.push(...Array.from({ length: firstDay }, () => null));
+		days.push(...Array.from({ length: daysInMonth }, (_, i) => i + 1));
 		return days;
 	});
 
@@ -76,6 +76,19 @@
 	}
 
 	const DEFAULT_EVENT_COLOR = '#d1d5db';
+
+	/** @type {CalendarEvent | null} */
+	let selectedEvent = $state(null);
+
+	/**
+	 * Opens the event detail modal for events that have a details object.
+	 * @param {CalendarEvent} event
+	 */
+	function handleEventClick(event) {
+		if (event.details) {
+			selectedEvent = event;
+		}
+	}
 
 	/** Moves the view back one month, wrapping the year if needed. */
 	function prevMonth() {
@@ -152,17 +165,14 @@
 					<span class="text-xs {isToday(day) ? 'font-bold text-foreground' : 'font-medium text-foreground'}">{day}</span>
 					<div class="mt-0.5 flex flex-col gap-0.5">
 						{#each getEventsForDay(day) as event}
-							<div
-								class="group relative truncate rounded px-1.5 py-0.5 text-xs font-medium text-gray-900"
+							<button
+								onclick={() => handleEventClick(event)}
+								class="w-full truncate rounded px-1.5 py-0.5 text-left text-xs font-medium text-gray-900
+									{event.details ? 'cursor-pointer hover:brightness-95' : 'cursor-default'}"
 								style="background-color: {event.color ?? DEFAULT_EVENT_COLOR};"
 							>
 								{event.label}
-								{#if event.description}
-									<div class="pointer-events-none absolute bottom-full left-0 z-50 mb-1 hidden w-max max-w-48 rounded-md bg-foreground px-2 py-1 text-xs text-background shadow-lg group-hover:block">
-										{event.description}
-									</div>
-								{/if}
-							</div>
+							</button>
 						{/each}
 					</div>
 				{/if}
@@ -170,3 +180,22 @@
 		{/each}
 	</div>
 </div>
+
+<Modal
+	title={selectedEvent?.label}
+	open={selectedEvent !== null}
+	onclose={() => (selectedEvent = null)}
+>
+	{#snippet children()}
+		{#if selectedEvent?.details}
+			<dl class="flex flex-col gap-3">
+				{#each Object.entries(selectedEvent.details) as [key, value]}
+					<div class="flex flex-col gap-0.5">
+						<dt class="text-xs font-medium capitalize text-muted">{key}</dt>
+						<dd class="text-sm text-foreground">{value}</dd>
+					</div>
+				{/each}
+			</dl>
+		{/if}
+	{/snippet}
+</Modal>
