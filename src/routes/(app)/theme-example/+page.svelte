@@ -1,13 +1,16 @@
 <script>
-	import { theme } from '$lib';
-	import SunIcon from '$lib/components/icons/SunIcon.svelte';
-	import MoonIcon from '$lib/components/icons/MoonIcon.svelte';
+	import { theme } from "$lib";
+	import SunIcon from "$lib/components/icons/SunIcon.svelte";
+	import MoonIcon from "$lib/components/icons/MoonIcon.svelte";
+	import Card from "$lib/components/Card.svelte";
 </script>
 
 <div class="flex h-full items-center justify-center">
 	<div class="flex flex-col items-center gap-3">
 		<p class="text-sm font-medium text-muted">
-			Current theme: <span class="font-semibold text-foreground">{theme.current}</span>
+			Current theme: <span class="font-semibold text-foreground"
+				>{theme.current}</span
+			>
 		</p>
 		<button
 			onclick={() => theme.toggle()}
