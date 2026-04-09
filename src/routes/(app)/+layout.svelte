@@ -13,6 +13,7 @@
 		{ label: 'Table Example', path: '/table-example' },
 		{ label: 'Modal Example', path: '/modal-example' },
 		{ label: 'Drawer Example', path: '/drawer-example' },
+		{ label: 'Theme Example', path: '/theme-example' },
 	];
 
 	let { children } = $props();

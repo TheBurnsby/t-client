@@ -3,17 +3,17 @@
 /* ============================================================
    THEME TOKENS
    Tailwind v4 @theme — generates utility classes from tokens.
-   e.g. --color-bg → bg-bg, --radius-md → rounded-md (overridden)
+   e.g. --color-background → bg-background, --radius-md → rounded-md
    ============================================================ */
 
 @theme {
   /* --- Colors --- */
-  --color-bg: #f9fafb;
+  --color-background: #f9fafb;
   --color-surface: #ffffff;
   --color-surface-alt: #f3f4f6;
   --color-border: #e5e7eb;
-  --color-text: #111827;
-  --color-text-muted: #6b7280;
+  --color-foreground: #111827;
+  --color-muted: #6b7280;
   --color-primary: #1f2937;
   --color-primary-hover: #111827;
   --color-active: #dbeafe;
@@ -52,12 +52,12 @@
    ============================================================ */
 
 [data-theme="dark"] {
-  --color-bg: #111111;
+  --color-background: #111111;
   --color-surface: #1c1c1e;
   --color-surface-alt: #2a2a2a;
   --color-border: #3a3a3a;
-  --color-text: #f9fafb;
-  --color-text-muted: #9ca3af;
+  --color-foreground: #f9fafb;
+  --color-muted: #9ca3af;
   --color-primary: #e5e7eb;
   --color-primary-hover: #f9fafb;
   --color-active: #1e3a5f;

@@ -171,12 +171,12 @@
 {/if}
 
 <div class="overflow-x-auto">
-  <table class="min-w-full border border-gray-200 text-sm">
-    <thead class="bg-gray-100 text-left">
+  <table class="min-w-full border border-border text-sm">
+    <thead class="bg-surface-alt text-left">
       <tr>
         {#each schema as col}
           <th
-            class="px-4 py-2 font-semibold text-gray-700 border-b border-gray-200 overflow-hidden text-ellipsis whitespace-nowrap"
+            class="px-4 py-2 font-semibold text-foreground border-b border-border overflow-hidden text-ellipsis whitespace-nowrap"
             class:cursor-pointer={!!events?.onHeaderClick}
             class:select-none={!!events?.onHeaderClick}
             style={col.minWidth ? `min-width: ${col.minWidth}px` : ''}
@@ -211,8 +211,8 @@
           class={activeRow === row
             ? 'row-active'
             : i % 2 === 0
-              ? 'bg-white'
-              : 'bg-gray-50'}
+              ? 'bg-surface'
+              : 'bg-background'}
           class:cursor-pointer={!!events?.onRowClick}
           tabindex={events?.onRowClick ? 0 : undefined}
           onclick={() => handleRowClick(row)}
@@ -223,7 +223,7 @@
           {#each schema as col}
             {@const value = row[col.key]}
             <td
-              class="px-4 py-2 text-gray-800 border-b border-gray-100"
+              class="px-4 py-2 text-foreground border-b border-border"
               class:overflow-hidden={col.type !== 'tags'}
               class:text-ellipsis={col.type !== 'tags'}
               class:whitespace-nowrap={col.type !== 'tags'}
@@ -265,7 +265,7 @@
       {/each}
       {#if data.length === 0}
         <tr>
-          <td colspan={schema.length} class="px-4 py-4 text-center text-gray-400">
+          <td colspan={schema.length} class="px-4 py-4 text-center text-muted">
             No data
           </td>
         </tr>
@@ -276,6 +276,6 @@
 
 <style>
   .row-active {
-    background-color: #dbeafe;
+    background-color: var(--color-active);
   }
 </style>

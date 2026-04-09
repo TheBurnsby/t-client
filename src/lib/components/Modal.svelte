@@ -55,18 +55,18 @@
 		aria-modal="true"
 		aria-labelledby={title ? titleId : undefined}
 		class="fixed left-1/2 top-1/2 z-50 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2
-			flex-col rounded-lg bg-white shadow-xl"
+			flex-col rounded-lg bg-surface shadow-xl"
 	>
 		<!-- Header -->
-		<div class="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 px-4">
+		<div class="flex h-14 shrink-0 items-center justify-between border-b border-border px-4">
 			{#if title}
-				<h2 id={titleId} class="text-sm font-semibold text-gray-900">{title}</h2>
+				<h2 id={titleId} class="text-sm font-semibold text-foreground">{title}</h2>
 			{:else}
 				<span></span>
 			{/if}
 			<button
 				onclick={modal.close}
-				class="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+				class="rounded-md p-1.5 text-muted transition-colors hover:bg-surface-alt hover:text-foreground"
 				aria-label="Close modal"
 			>
 				<XIcon class="h-5 w-5" />
@@ -80,7 +80,7 @@
 
 		<!-- Footer (only rendered when snippet is provided) -->
 		{#if footer}
-			<div class="shrink-0 border-t border-gray-200 px-4 py-3">
+			<div class="shrink-0 border-t border-border px-4 py-3">
 				{@render footer()}
 			</div>
 		{/if}

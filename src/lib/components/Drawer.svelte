@@ -40,14 +40,14 @@
 	role="dialog"
 	aria-modal="true"
 	aria-label="Drawer"
-	class="fixed inset-y-0 right-0 z-50 flex flex-col bg-white shadow-xl transition-transform duration-300
+	class="fixed inset-y-0 right-0 z-50 flex flex-col bg-surface shadow-xl transition-transform duration-300
 		{drawer.width} {drawer.isOpen ? 'translate-x-0' : 'translate-x-full'}"
 >
 	<!-- Drawer header -->
-	<div class="flex h-14 shrink-0 items-center justify-end border-b border-gray-200 px-4">
+	<div class="flex h-14 shrink-0 items-center justify-end border-b border-border px-4">
 		<button
 			onclick={drawer.close}
-			class="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+			class="rounded-md p-1.5 text-muted transition-colors hover:bg-surface-alt hover:text-foreground"
 			aria-label="Close drawer"
 		>
 			<XIcon class="h-5 w-5" />
