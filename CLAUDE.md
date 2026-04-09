@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Always ask before making architectural changes.
 - Add documentation comments in JSDoc format for any new code written
 - Run `npm run check` after creating or modifying any component or store, and fix all errors before considering the task complete
+- **for loops** prioritize for...in, for...of and for...each over classic for 
 
 ## Overview
 
