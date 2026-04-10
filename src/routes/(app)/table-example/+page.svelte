@@ -1,7 +1,11 @@
 <script>
   import { Table } from "$lib";
   import CheckCircleIcon from "$lib/components/icons/CheckCircleIcon.svelte";
-  import { drawer } from "$lib/stores/drawer.svelte.js";
+  import Drawer from "$lib/components/Drawer.svelte";
+  import Card from "$lib/components/Card.svelte";
+
+  /** @type {Record<string, any> | null} */
+  let selectedRow = $state(null);
 
   /** @type {import('$lib/types').ColumnSchema[]} */
   const schema = [
@@ -271,11 +275,7 @@
 
   /** @type {import('$lib/types').TableEvents} */
   const events = {
-    onRowClick: (row) => {
-      console.log("Row clicked:", row);
-      // open drawer model
-      drawer.open("w-1/3");
-    },
+    onRowClick: (row) => (selectedRow = row),
     onCellClick: (value, key, row) =>
       console.log("Cell clicked:", { key, value, row }),
     onHeaderClick: (key) => console.log("Header clicked:", key),
@@ -286,6 +286,81 @@
 </script>
 
 <div class="mx-auto mt-8 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Staff Directory</h1>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Table Example</h1>
   <Table {schema} {data} {events} {addOns} />
 </div>
+
+<Drawer
+  open={selectedRow !== null}
+  onclose={() => (selectedRow = null)}
+  width="w-1/3"
+  title={selectedRow?.name ?? ""}
+  subtitle={selectedRow?.role}
+>
+  {#snippet children()}
+    {#if selectedRow}
+      {@const staff = /** @type {Record<string, any>} */ (selectedRow)}
+      <div class="flex flex-col gap-3">
+        <!-- Identity -->
+        <Card>
+          {#snippet header()}
+            <h2 class="text-sm font-semibold text-foreground">{staff.name}</h2>
+          {/snippet}
+          <div class="flex flex-col gap-1 text-sm">
+            <p>
+              <span class="font-medium text-foreground">Role:</span>
+              <span class="text-muted">{staff.role}</span>
+            </p>
+            <p>
+              <span class="font-medium text-foreground">Department:</span>
+              <span class="text-muted">{staff.department}</span>
+            </p>
+            <p>
+              <span class="font-medium text-foreground">Status:</span>
+              <span
+                class="{staff.active ? 'text-green-600' : 'text-red-400'} ml-1"
+              >
+                {staff.active ? "On Duty" : "Off Duty"}
+              </span>
+            </p>
+          </div>
+        </Card>
+
+        <!-- Activity -->
+        <Card>
+          {#snippet header()}
+            <h2 class="text-sm font-semibold text-foreground">Activity</h2>
+          {/snippet}
+          <div class="flex flex-col gap-1 text-sm">
+            <p>
+              <span class="font-medium text-foreground">Hire Date:</span>
+              <span class="text-muted">{staff.startDate}</span>
+            </p>
+            <p>
+              <span class="font-medium text-foreground">Last Check-In:</span>
+              <span class="text-muted">{staff.lastLogin}</span>
+            </p>
+          </div>
+        </Card>
+
+        <!-- Specialties -->
+        <Card>
+          {#snippet header()}
+            <h2 class="text-sm font-semibold text-foreground">Specialties</h2>
+          {/snippet}
+          <div class="flex flex-wrap gap-1.5">
+            {#each staff.tags ?? [] as tag}
+              {@const label = typeof tag === "string" ? tag : tag.label}
+              {@const color =
+                typeof tag === "string" ? "#efefef" : (tag.color ?? "#efefef")}
+              <span
+                class="rounded-full px-2.5 py-0.5 text-xs font-medium"
+                style="background-color: {color};">{label}</span
+              >
+            {/each}
+          </div>
+        </Card>
+      </div>
+    {/if}
+  {/snippet}
+</Drawer>
