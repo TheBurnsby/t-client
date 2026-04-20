@@ -18,6 +18,13 @@
   --color-primary-hover: #111827;
   --color-active: #dbeafe;
 
+  /* --- Status & Semantic Colors --- */
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-alert: #f97316;
+  --color-bridge: #2563eb;
+
   /* --- Border Radius --- */
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -61,4 +68,11 @@
   --color-primary: #e5e7eb;
   --color-primary-hover: #f9fafb;
   --color-active: #1e3a5f;
+
+  /* --- Status & Semantic Colors (dark) --- */
+  --color-success: #22c55e;
+  --color-danger: #f87171;
+  --color-warning: #fbbf24;
+  --color-alert: #fb923c;
+  --color-bridge: #60a5fa;
 }

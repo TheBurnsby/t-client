@@ -6,7 +6,7 @@
  * @typedef {Object} ColumnSchema
  * @property {string} key - The property key to read from each row object
  * @property {string} label - The column header display name
- * @property {'string'|'number'|'boolean'|'icon'|'date'|'datetime'|'tags'} type - The data type of the column
+ * @property {'string'|'number'|'boolean'|'icon'|'date'|'datetime'|'tags'|'custom'} type - The data type of the column. Use 'custom' to opt into the customCell snippet renderer.
  * @property {number} [minWidth] - Minimum column width in pixels
  * @property {{ getValue: (row: Record<string, any>) => string }} [tooltip] - Optional tooltip; triggers on hover
  */

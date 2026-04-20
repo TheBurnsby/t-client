@@ -18,10 +18,22 @@
    *   schema?: ColumnSchema[],
    *   data?: Record<string, any>[],
    *   events?: TableEvents,
-   *   addOns?: TableAddOns
+   *   addOns?: TableAddOns,
+   *   headerSnippets?: Record<string, import('svelte').Snippet>,
+   *   customCell?: import('svelte').Snippet<[ColumnSchema, any, Record<string, any>]>,
+   *   actionsSnippet?: import('svelte').Snippet<[Record<string, any>]>
    * }}
    */
-  let { schema = [], data = [], events = {}, addOns = {} } = $props();
+  
+  let { 
+    data = [],
+    customCell,
+    schema = [], 
+    events = {}, 
+    addOns = {}, 
+    actionsSnippet, 
+    headerSnippets = {},
+  } = $props();
 
   /** @type {string|null} */
   let sortKey = $state(null);
@@ -210,7 +222,11 @@
               : undefined}
           >
             <span class="flex items-center gap-1">
-              {col.label}
+              {#if headerSnippets[col.key]}
+                {@render headerSnippets[col.key]()}
+              {:else}
+                {col.label}
+              {/if}
               {#if events?.onHeaderClick && sortKey === col.key}
                 {#if sortDir === 'asc'}
                   <ChevronUpIcon class="w-3 h-3 shrink-0" />
@@ -221,6 +237,9 @@
             </span>
           </th>
         {/each}
+        {#if actionsSnippet}
+          <th class="px-4 py-2 font-semibold text-foreground border-b border-border"></th>
+        {/if}
       </tr>
     </thead>
     <tbody>
@@ -242,15 +261,17 @@
             {@const value = row[col.key]}
             <td
               class="px-4 py-2 text-foreground border-b border-border"
-              class:overflow-hidden={col.type !== 'tags'}
-              class:text-ellipsis={col.type !== 'tags'}
-              class:whitespace-nowrap={col.type !== 'tags'}
+              class:overflow-hidden={col.type !== 'tags' && col.type !== 'custom'}
+              class:text-ellipsis={col.type !== 'tags' && col.type !== 'custom'}
+              class:whitespace-nowrap={col.type !== 'tags' && col.type !== 'custom'}
               style={col.minWidth ? `min-width: ${col.minWidth}px` : ''}
               onclick={() => events?.onCellClick?.(value, col.key, row)}
               onmouseenter={(e) => handleCellMouseEnter(e, value, col, row)}
               onmouseleave={() => handleCellMouseLeave(col)}
             >
-              {#if col.type === 'boolean'}
+              {#if col.type === 'custom'}
+                {@render customCell?.(col, value, row)}
+              {:else if col.type === 'boolean'}
                 {#if value}
                   <CheckIcon class="w-4 h-4 text-green-600" />
                 {:else}
@@ -279,11 +300,19 @@
               {/if}
             </td>
           {/each}
+          {#if actionsSnippet}
+            <td
+              class="px-4 py-2 border-b border-border"
+              onclick={(e) => e.stopPropagation()}
+            >
+              {@render actionsSnippet(row)}
+            </td>
+          {/if}
         </tr>
       {/each}
       {#if data.length === 0}
         <tr>
-          <td colspan={schema.length} class="px-4 py-4 text-center text-muted">
+          <td colspan={schema.length + (actionsSnippet ? 1 : 0)} class="px-4 py-4 text-center text-muted">
             No data
           </td>
         </tr>

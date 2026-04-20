@@ -8,6 +8,9 @@
 	 * @property {import('svelte').Snippet} [children] - Content rendered in the modal body.
 	 * @property {import('svelte').Snippet} [footer] - Optional footer area for actions (e.g. buttons).
 	 *   When not provided the footer is hidden entirely.
+	 * @property {string} [width='max-w-md'] - Tailwind max-width class applied to the dialog panel.
+	 *   Defaults to 'max-w-md'. Pass a wider class (e.g. 'max-w-2xl', 'max-w-5xl') when the content
+	 *   requires more horizontal space.
 	 * @property {boolean} [closeOnBackdrop=true] - When true, clicking the backdrop closes the modal.
 	 *   Set to false to prevent accidental dismissal (e.g. confirmation dialogs).
 	 * @property {boolean} [open] - When provided, controls visibility directly instead of the global
@@ -17,7 +20,7 @@
 	 */
 
 	/** @type {ModalProps} */
-	let { title, children, footer, closeOnBackdrop = true, open, onclose } = $props();
+	let { title, children, footer, closeOnBackdrop = true, open, onclose, width = 'max-w-md' } = $props();
 
 	/** Whether this instance is controlled by the `open` prop or the global store. */
 	const isControlled = $derived(open !== undefined);
@@ -73,7 +76,7 @@
 		role="dialog"
 		aria-modal="true"
 		aria-labelledby={title ? titleId : undefined}
-		class="fixed left-1/2 top-1/2 z-50 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2
+		class="fixed left-1/2 top-1/2 z-50 flex w-full {width} -translate-x-1/2 -translate-y-1/2
 			flex-col rounded-lg bg-surface shadow-xl"
 	>
 		<!-- Header -->

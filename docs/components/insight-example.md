@@ -90,3 +90,14 @@ A dashboard showing episode insights for a home health agency. Each row is an ep
 - For the drawer body I mention '...more details about the episode'. For now just put exmple data found in the row that was clicked and seperate sections of the body using the Card component.
 - Generate an array with 30 example objects following schema defined above and use this to feed into the table until we have a query to get episodes. Define this example arrays as 'episodes'. This will be the main data source for the table.
 - Ask for clarity before making assumptions.
+
+## Post build fixes/misses:
+- In table component schema why 'custom' and 'tags'? I only see custom being used from the schema.
+- Make a tags component instead of the <span > element in the table
+- Fix bridge Icon
+- Remove drawer overlay so rows can be clicked that reload table content based on row click
+    - If drawer open and any modal is open, make sure modal re-centers on screen in context with the drawer.
+    - Dial in the darwer in a seperate update.
+- In Table compoent there is a contrast color function that should be a global instead.
+- Table should fix the page and avoid vertical scroll.
+- Community alerts cell data should be tag and we should include exclamation point in tag
